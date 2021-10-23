@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageProcessor", "ImageProcessor\ImageProcessor.csproj", "{2BDB6ABE-089D-4155-9FB6-698352BA2577}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RImage_Test", "RImage_Test\RImage_Test.csproj", "{BF7CE1C9-73EE-499D-808A-530FBE1367D5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2BDB6ABE-089D-4155-9FB6-698352BA2577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BDB6ABE-089D-4155-9FB6-698352BA2577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BDB6ABE-089D-4155-9FB6-698352BA2577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BDB6ABE-089D-4155-9FB6-698352BA2577}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BF7CE1C9-73EE-499D-808A-530FBE1367D5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF7CE1C9-73EE-499D-808A-530FBE1367D5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF7CE1C9-73EE-499D-808A-530FBE1367D5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF7CE1C9-73EE-499D-808A-530FBE1367D5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {23B195B0-2644-4A7A-9A09-37723BEA62BD}
+	EndGlobalSection
+EndGlobal
