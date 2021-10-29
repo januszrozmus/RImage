@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImageProcessor
 {
@@ -11,6 +7,14 @@ namespace ImageProcessor
     {
         private Bitmap _InputBitmap = null;
         private Bitmap _OutputBitmap = null;
+
+        public RImage()
+        {
+        }
+
+        public RImage(int width, int height)
+        {
+        }
 
         public RImage(Bitmap bitmap)
         {
@@ -22,7 +26,6 @@ namespace ImageProcessor
         {
             _InputBitmap = new Bitmap(bitmapFile);
             _OutputBitmap = _InputBitmap;
-            Array a = Mat;
         }
 
         public Bitmap ToBimap()
@@ -37,6 +40,15 @@ namespace ImageProcessor
                 return Bitmap2Array(_OutputBitmap);
             }
         }
+
+        public Bitmap GetOriginalBitmap
+        {
+            get
+            {
+                return _InputBitmap;
+            }
+        }
+
 
         private Array Bitmap2Array(Bitmap image)
         {
@@ -81,60 +93,72 @@ namespace ImageProcessor
             return res;
         }
 
-        public Array GetChannel(Bitmap image, Enum.Colors channel)
+        public Bitmap GetChannel(Enum.Colors channel)
         {
-            int width = image.Width;
-            int height = image.Height;
-
-            int[,,] res = new int[width, height, 1];
-
-            for (int x = 0; x < width; x++)
+            switch (channel)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    Color pixelColor = image.GetPixel(x, y);
-                    switch (channel)
+                case Enum.Colors.Red:
                     {
-                        case Enum.Colors.Red:
-                            {
-                                res[x, y, 0] = pixelColor.R;
-                                break;
-                            }
-                        case Enum.Colors.Green:
-                            {
-                                res[x, y, 0] = pixelColor.G;
-                                break;
-                            }
-                        case Enum.Colors.Blue:
-                            {
-                                res[x, y, 0] = pixelColor.B;
-                                break;
-                            }
-                        default:
-                            {
-                                res[x, y, 0] = pixelColor.G;
-                                break;
-                            }
+                        return RGBFilter(0, 255, 0, 0, 0, 0);
                     }
-                }
+                case Enum.Colors.Green:
+                    {
+                        return RGBFilter(0, 0, 0, 255, 0, 0);
+                    }
+                case Enum.Colors.Blue:
+                    {
+                        return RGBFilter(0, 0, 0, 0, 0, 255);
+                    }
+                default:
+                    {
+                        return RGBFilter(0, 0, 0, 255, 0, 0);
+                    }
             }
-            return res;
         }
 
-        public Array GetImageGray()
+        public Bitmap RGBFilter(byte redLow, byte redHigh, byte greenLow, byte greenHigh, byte blueLow, byte blueHigh)
         {
             Bitmap image = _OutputBitmap;
             int width = image.Width;
             int height = image.Height;
 
-            int[,,] res = new int[width, height, 1];
+            Bitmap res = new Bitmap(_OutputBitmap.Width, _OutputBitmap.Height);
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    Color oldPixelColor = image.GetPixel(x, y);
+                    Color newPixelColor = FilteredColor(oldPixelColor, redLow, redHigh, greenLow, greenHigh, blueLow, blueHigh);
+                    res.SetPixel(x, y, newPixelColor);
+                }
+            }
+            return res;
+        }
+
+        private Color FilteredColor(Color oldPixelColor, byte redLimitLow, byte redLimitHigh, byte greenLimitLow, byte greenLimitHigh, byte blueLimitLow, byte blueLimitHigh)
+        {
+            int red = (oldPixelColor.R > redLimitLow && oldPixelColor.R < redLimitHigh) ? oldPixelColor.R : 0;
+            int green = (oldPixelColor.G > greenLimitLow && oldPixelColor.G < greenLimitHigh) ? oldPixelColor.G : 0;
+            int blue = (oldPixelColor.B > blueLimitLow && oldPixelColor.B < blueLimitHigh) ? oldPixelColor.B : 0;
+            return Color.FromArgb(red, green, blue);
+        }
+
+        public Bitmap GetImageGray()
+        {
+            Bitmap image = _OutputBitmap;
+            int width = image.Width;
+            int height = image.Height;
+
+            Bitmap res = new Bitmap(_OutputBitmap.Width, _OutputBitmap.Height);
 
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
                     Color pixelColor = image.GetPixel(x, y);
-                    int grayValue = ColorToGray(pixelColor);
+                    int grayValue = ColorToGrayDark(pixelColor);
+                    res.SetPixel(x, y, Color.FromArgb(grayValue, grayValue, grayValue));
                 }
             }
             return res;
@@ -142,7 +166,28 @@ namespace ImageProcessor
 
         private int ColorToGray(Color pixelColor)
         {
-            return (int)((pixelColor.R * pixelColor.G * pixelColor.B) / (255 * 255));
+            return (int)((pixelColor.R + pixelColor.G + pixelColor.B) / 3);
         }
+
+        private int ColorToGrayDark(Color pixelColor)
+        {
+            return (int)((pixelColor.R * pixelColor.G * pixelColor.B) / 65025);
+        }
+
+        //private Bitmap Array2Bitmap(Array imageArray)
+        //{
+        //    Bitmap res = new Bitmap(_OutputBitmap.Width, _OutputBitmap.Height);
+
+        //    for (int row = 0; row < res.Height; row++)
+        //    {
+        //        for (int col = 0; col < res.Width; col++)
+        //        {
+
+        //            //res.SetPixel(col, row, imageArray)
+        //        }
+        //    }
+
+        //    return res;
+        //}
     }
 }
